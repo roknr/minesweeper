@@ -9,15 +9,33 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Minesweeper.Core\Minesweeper.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Assets\Images\" />
+    <None Remove="Assets\Fonts\FontAwesome.otf" />
+    <None Remove="Assets\Fonts\Montserrat-Regular.ttf" />
+    <None Remove="Assets\Images\.icon.ico" />
+    <None Remove="Assets\Images\flag.png" />
+    <None Remove="Assets\Images\mine.png" />
+    <None Remove="Assets\Images\minus.png" />
+    <None Remove="Assets\Images\plus.png" />
+    <None Remove="Assets\Images\question.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Minesweeper.Core\Minesweeper.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\FontAwesome.otf" />
+    <Resource Include="Assets\Fonts\Montserrat-Regular.ttf" />
+    <Resource Include="Assets\Images\.icon.ico" />
+    <Resource Include="Assets\Images\flag.png" />
+    <Resource Include="Assets\Images\mine.png" />
+    <Resource Include="Assets\Images\minus.png" />
+    <Resource Include="Assets\Images\plus.png" />
+    <Resource Include="Assets\Images\question.png" />
   </ItemGroup>
 
 </Project>

@@ -3,6 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="Windows/MainWindow.xaml">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Use global styles by importing them here -->
+                <!-- NOTE: order is important - the first ones referenced are used in other styles -->
+                <ResourceDictionary Source="Styles/ColorsLight.xaml"/>
+                <ResourceDictionary Source="Styles/Fonts.xaml"/>
 
+                <ResourceDictionary Source="Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="Styles/ButtonsLight.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
