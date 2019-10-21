@@ -12,5 +12,6 @@
   <InheritXmlSettings>True</InheritXmlSettings>
   <IgnoredWords>
     <Ignore>app</Ignore>
+    <Ignore>locator</Ignore>
   </IgnoredWords>
 </SpellCheckerConfiguration>
