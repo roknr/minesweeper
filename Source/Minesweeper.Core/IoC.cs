@@ -19,7 +19,7 @@ namespace Minesweeper.Core
         /// <summary>
         /// The actual application dependency injection container.
         /// </summary>
-        private static IKernel Kernel { get; set; } = null!;
+        private static IKernel Kernel { get; set; } = new StandardKernel();
 
         #endregion
 
@@ -36,8 +36,8 @@ namespace Minesweeper.Core
             if (Initialized)
                 return;
 
-            // Create the DI container by passing in the service bindings
-            Kernel = new StandardKernel(module);
+            // Load the service bindings into the DI container
+            Kernel.Load(module);
 
             Initialized = true;
         }

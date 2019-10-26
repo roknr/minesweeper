@@ -22,6 +22,8 @@ namespace Minesweeper.DesktopApp
             SetupApplication();
         }
 
+        #region Private helpers
+
         /// <summary>
         /// Sets up the application.
         /// </summary>
@@ -35,10 +37,16 @@ namespace Minesweeper.DesktopApp
             Current.MainWindow.Show();
         }
 
+        /// <summary>
+        /// Sets up the IoC container by passing it the <see cref="MinesweeperModule"/>
+        /// service bindings.
+        /// </summary>
         private void SetupIoC()
         {
             using var module = new MinesweeperModule();
             Core.IoC.Setup(module);
         }
+
+        #endregion
     }
 }

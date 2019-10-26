@@ -1,7 +1,7 @@
 namespace Minesweeper.Core.Enums
 {
     /// <summary>
-    /// Defines an application page.
+    /// Defines the types of pages available in the application.
     /// </summary>
     public enum ApplicationPage
     {
