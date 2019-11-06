@@ -19,6 +19,7 @@
     <!-- Window chrome for custom window look -->
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="{Binding WindowHeaderHeight}"
+                      ResizeBorderThickness="{Binding OuterMarginSizeThickness}"
                       GlassFrameThickness="0"
                       CornerRadius="0" />
     </WindowChrome.WindowChrome>
