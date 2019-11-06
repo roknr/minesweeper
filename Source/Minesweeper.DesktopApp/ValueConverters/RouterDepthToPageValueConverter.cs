@@ -1,7 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using Minesweeper.Core.Enums;
+using Minesweeper.Core.Interfaces.Routing;
+using Minesweeper.Core.Routing;
 using Minesweeper.Core.ValueObjects;
 using Minesweeper.Core.ViewModels.Pages;
 using Minesweeper.DesktopApp.Pages;
@@ -9,28 +13,63 @@ using Minesweeper.DesktopApp.Pages;
 namespace Minesweeper.DesktopApp.ValueConverters
 {
     /// <summary>
-    /// The converter that converts an <see cref="ApplicationPage"/> to an actual page,
-    /// that is derived from the <see cref="Page"/> class.
+    /// The converter that converts a <see cref="uint"/> to an application page, derived from the <see cref="Page"/> class.
     /// </summary>
-    public class ApplicationPageToPageValueConverter : ValueConverterBase<ApplicationPageToPageValueConverter>
+    public class RouterDepthToPageValueConverter : ValueConverterBase<RouterDepthToPageValueConverter>
     {
+        #region Private members
+
+        /// <summary>
+        /// The application router.
+        /// </summary>
+        /// <remarks>
+        /// Ignore nullable error because it will always be set if not in design mode.
+        /// </remarks>
+        private readonly IRouter mRouter = null!;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RouterDepthToPageValueConverter"/> class.
+        /// </summary>
+        public RouterDepthToPageValueConverter()
+        {
+            // Only set the router if not in design mode because IoC is not set up and a binding will not exist
+            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+                mRouter = Core.IoC.Get<IRouter>();
+        }
+
+        #endregion
+
         #region Converter methods
 
         /// <summary>
-        /// Converts a <see cref="ApplicationPage"/> to an actual page.
+        /// Converts the selected <see cref="Route"/> on the router depth, specified by the converter input
+        /// (the "value" parameter - a <see cref="uint"/>) to a page (derived from the <see cref="Page"/> class).
         /// </summary>
-        /// <param name="value">The value produced by the binding source.</param>
+        /// <param name="value">The router depth (a <see cref="uint"/>).</param>
         /// <param name="targetType">The type of the binding target property.</param>
-        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="parameter">The converter parameter to use. None when using this converter.</param>
         /// <param name="culture">The culture to use in the converter.</param>
         /// <returns></returns>
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // The value represents the application page type
-            var pageType = (ApplicationPage)value;
+#if DEBUG
+            // If in design mode, no IoC is set up and router won't exist, so just return a start page
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+                return new StartPage();
+#endif
 
-            // Based on the page type, create the corresponding page
-            return ConvertPage(pageType, parameter);
+            // The value represents the router depth
+            var depth = (uint)value;
+
+            // Get the selected route from the router and convert it to a page
+            var route = mRouter.GetActiveRoute(depth);
+            var page = ConvertRouteToPage(route);
+
+            return page;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -44,15 +83,14 @@ namespace Minesweeper.DesktopApp.ValueConverters
         #region Private helpers
 
         /// <summary>
-        /// Converts an <see cref="ApplicationPage"/> type to an actual page derived from <see cref="Page"/>.
+        /// Converts a <see cref="Route"/> to an application page derived from the <see cref="Page"/> class.
         /// </summary>
-        /// <param name="pageType">The page type.</param>
-        /// <param name="parameter">The optional parameter.</param>
+        /// <param name="route">The route to convert to an application page.</param>
         /// <returns></returns>
-        private Page ConvertPage(ApplicationPage pageType, object parameter)
+        private Page ConvertRouteToPage(Route route)
         {
             // Create the page based on the page type
-            switch (pageType)
+            switch (route.PageType)
             {
                 case ApplicationPage.Start:
                     {
@@ -60,8 +98,8 @@ namespace Minesweeper.DesktopApp.ValueConverters
                     }
                 case ApplicationPage.Game:
                     {
-                        // Parameter is expected to be the game settings
-                        var gameSettings = (GameSettings)parameter;
+                        // Argument is expected to be the game settings
+                        var gameSettings = (GameSettings)route.Argument!;
 
                         return CreateGamePage(gameSettings);
                     }

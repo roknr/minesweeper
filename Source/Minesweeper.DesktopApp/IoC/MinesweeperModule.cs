@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Minesweeper.Core.Interfaces.Routing;
+using Minesweeper.Core.Routing;
 using Ninject.Modules;
 
 namespace Minesweeper.DesktopApp.IoC
@@ -12,7 +15,10 @@ namespace Minesweeper.DesktopApp.IoC
         /// </summary>
         public override void Load()
         {
-
+            Bind<IRouter>()
+                .To<Router>()
+                .InSingletonScope()
+                .WithConstructorArgument<IEnumerable<Route>>(new Routes());
         }
     }
 }

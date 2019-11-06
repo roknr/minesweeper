@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minesweeper.DesktopApp.Windows"
+        xmlns:routing="clr-namespace:Minesweeper.DesktopApp.Routing"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -131,6 +132,6 @@
 
     </Window.Resources>
     <Grid>
-        <Button>Test</Button>
+        <routing:RouterControl Depth="0"/>
     </Grid>
 </Window>

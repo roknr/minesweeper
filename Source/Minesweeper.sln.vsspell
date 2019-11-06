@@ -12,6 +12,9 @@
   <InheritXmlSettings>True</InheritXmlSettings>
   <IgnoredWords>
     <Ignore>app</Ignore>
+    <Ignore>cancelable</Ignore>
     <Ignore>locator</Ignore>
+    <Ignore>nullable</Ignore>
+    <Ignore>accessor</Ignore>
   </IgnoredWords>
 </SpellCheckerConfiguration>

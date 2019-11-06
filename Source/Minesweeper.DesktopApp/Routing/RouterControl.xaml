@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="Minesweeper.DesktopApp.Routing.RouterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Minesweeper.DesktopApp.Routing"
+             xmlns:vc="clr-namespace:Minesweeper.DesktopApp.ValueConverters"
+             xmlns:ap="clr-namespace:Minesweeper.DesktopApp.AttachedProperties"
+             mc:Ignorable="d"
+             d:DesignHeight="250"
+             d:DesignWidth="400"
+             Unloaded="RouterControl_Unloaded">
+    <!--
+        The frame in which the dynamic content will be displayed (the application routes/pages)
+
+    NOTES:
+        Bind the frame's content to the router control's Depth property, which dictates
+        at which router depth the router should display the selected route for that depth. Also use
+        a value converter which converts the depth to the selected route and in turn to the page.
+        When the selected route for this depth changes, the code behind will refresh this content binding,
+        so that the newly selected route will get bound.
+    -->
+    <Frame x:Name="mRouterFrame"
+           ap:FrameAttachedProperties.DisableNavigation="True"
+           Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RouterControl}},
+                             Path=Depth,
+                             Converter={vc:RouterDepthToPageValueConverter}}"/>
+</UserControl>
