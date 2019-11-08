@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minesweeper.DesktopApp.Windows"
         xmlns:routing="clr-namespace:Minesweeper.DesktopApp.Routing"
+        xmlns:vm="clr-namespace:Minesweeper.Core.ViewModels;assembly=Minesweeper.Core"
+        xmlns:vc="clr-namespace:Minesweeper.DesktopApp.ValueConverters"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -132,6 +134,29 @@
 
     </Window.Resources>
     <Grid>
-        <routing:RouterControl Depth="0" Padding="0,20,0,30"/>
+
+        <Grid.RowDefinitions>
+            <!-- The application content -->
+            <RowDefinition Height="*"/>
+            <!-- The row for where the theme button is placed -->
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <routing:RouterControl Depth="0"
+                               Padding="0,20,0,0"/>
+
+        <!-- Change theme button -->
+        <!-- TODO: icon in designer displaying as blank square - try to fix this -->
+        <Button Grid.Row="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,3,3"
+                FontSize="16"
+                Style="{StaticResource ButtonThemeIconStyle}"
+                Command="{Binding ApplicationViewModel.ChangeThemeCommand,
+                                  Source={x:Static vm:ViewModelLocator.Instance}}"
+                Content="{Binding ApplicationViewModel.CurrentTheme,
+                                  Source={x:Static vm:ViewModelLocator.Instance},
+                                  Converter={vc:ApplicationThemeToIconValueConverter}}"/>
     </Grid>
 </Window>

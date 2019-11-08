@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using Minesweeper.Core.Interfaces.Routing;
+using Minesweeper.Core.Interfaces.Services;
 using Minesweeper.Core.Routing;
+using Minesweeper.Core.ViewModels;
+using Minesweeper.DesktopApp.Services;
 using Ninject.Modules;
 
 namespace Minesweeper.DesktopApp.IoC
@@ -19,6 +22,14 @@ namespace Minesweeper.DesktopApp.IoC
                 .To<Router>()
                 .InSingletonScope()
                 .WithConstructorArgument<IEnumerable<Route>>(new Routes());
+
+            Bind<ApplicationViewModel>()
+                .To<ApplicationViewModel>()
+                .InSingletonScope();
+
+            Bind<IThemeService>()
+                .To<ThemeService>()
+                .InTransientScope();
         }
     }
 }

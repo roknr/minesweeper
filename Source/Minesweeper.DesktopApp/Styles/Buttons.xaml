@@ -108,4 +108,71 @@
         </Style.Triggers>
     </Style>
 
+    <!-- The button that displays the application theme as a FontAwesome icon -->
+    <Style x:Key="ButtonThemeIconStyle" TargetType="{x:Type Button}">
+        <Setter Property="FontFamily" Value="{DynamicResource FontAwesome}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            Background="Transparent"
+                            SnapsToDevicePixels="True">
+
+                        <!-- Render transform for double animation (grows on hover) -->
+                        <Border.RenderTransform>
+                            <ScaleTransform/>
+                        </Border.RenderTransform>
+                        <Border.RenderTransformOrigin>
+                            <Point X="0.5" Y="0.5"/>
+                        </Border.RenderTransformOrigin>
+
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Focusable="False"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                   Margin="{TemplateBinding Padding}" 
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- When the mouse enters the button, the background animates to a blue color -->
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="border"
+                                                     Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1.4"
+                                                     Duration="0:0:0.15"/>
+                                    <DoubleAnimation Storyboard.TargetName="border"
+                                                     Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1.4"
+                                                     Duration="0:0:0.15"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- When the mouse leaves the button, the background animates to transparent -->
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="border"
+                                                     Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1"
+                                                     Duration="0:0:0.2"/>
+                                    <DoubleAnimation Storyboard.TargetName="border"
+                                                     Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1"
+                                                     Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
