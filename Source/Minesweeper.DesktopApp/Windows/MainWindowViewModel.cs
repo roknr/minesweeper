@@ -41,17 +41,17 @@ namespace Minesweeper.DesktopApp.Windows
         /// <summary>
         /// The command that opens the icon context menu.
         /// </summary>
-        public IRelayCommand OpenIconMenuCommand { get; private set; }
+        public IRelayCommand OpenIconMenuCommand { get; }
 
         /// <summary>
         /// The command that minimizes the window.
         /// </summary>
-        public IRelayCommand MinimizeCommand { get; private set; }
+        public IRelayCommand MinimizeCommand { get; }
 
         /// <summary>
         /// The command that closes the window.
         /// </summary>
-        public IRelayCommand CloseCommand { get; private set; }
+        public IRelayCommand CloseCommand { get; }
 
         #endregion
 

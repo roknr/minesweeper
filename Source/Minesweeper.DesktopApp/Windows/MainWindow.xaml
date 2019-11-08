@@ -132,6 +132,6 @@
 
     </Window.Resources>
     <Grid>
-        <routing:RouterControl Depth="0"/>
+        <routing:RouterControl Depth="0" Padding="0,20,0,30"/>
     </Grid>
 </Window>

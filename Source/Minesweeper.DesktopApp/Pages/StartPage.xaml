@@ -3,14 +3,154 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ap="clr-namespace:Minesweeper.DesktopApp.AttachedProperties"
+      xmlns:vm="clr-namespace:Minesweeper.Core.ViewModels;assembly=Minesweeper.Core"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450"
+      d:DesignWidth="800"
       Title="StartPage">
 
-    <Grid>
-        <Label HorizontalAlignment="Stretch"
-               VerticalAlignment="Stretch"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center">Start page</Label>
-    </Grid>
+    <!-- The page content container -->
+    <DockPanel LastChildFill="False"
+               Width="450">
+        
+        <!-- Header text -->
+        <Label DockPanel.Dock="Top"
+               HorizontalAlignment="Center"
+               Foreground="{DynamicResource TextForegroundBrush}"
+               Content="Enter your game preferences"/>
+        
+        <!-- Game settings -->
+        <StackPanel DockPanel.Dock="Top"
+                    Margin="0,10,0,0"
+                    Width="300">
+            
+            <!-- Width settings -->
+            <DockPanel LastChildFill="False">
+
+                <Label DockPanel.Dock="Left"
+                       Content="Width:"
+                       Foreground="{DynamicResource TextForegroundBrush}"/>
+
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal">
+                    
+                    <!-- Decrease width repeat button -->
+                    <RepeatButton Command="{Binding DecreaseWidthCommand}"
+                                  Style="{DynamicResource RepeatButtonDefaultStyle}">
+                        <Image Source="/Assets/Images/minus.png"
+                               Width="20"/>
+                    </RepeatButton>
+
+                    <!-- Width value -->
+                    <TextBox Margin="5,0,0,0"
+                             Text="{Binding GameSettingsViewModel.FieldWidth}"
+                             Style="{StaticResource TextBoxStyle}"/>
+
+                    <!-- Increase width repeat button -->
+                    <RepeatButton Margin="5,0,0,0"
+                                  Command="{Binding IncreaseWidthCommand}"
+                                  Style="{DynamicResource RepeatButtonDefaultStyle}">
+                        <Image Source="/Assets/Images/plus.png"
+                               Width="20"/>
+                    </RepeatButton>
+
+                </StackPanel>
+
+            </DockPanel>
+
+            <!-- Height settings -->
+            <DockPanel LastChildFill="False"
+                       Margin="0,5,0,0">
+
+                <Label DockPanel.Dock="Left"
+                       Content="Height:"
+                       Foreground="{DynamicResource TextForegroundBrush}"/>
+
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal">
+
+                    <!-- Decrease height repeat button -->
+                    <RepeatButton Command="{Binding DecreaseHeightCommand}"
+                                  Style="{DynamicResource RepeatButtonDefaultStyle}">
+                        <Image Source="/Assets/Images/minus.png"
+                               Width="20"/>
+                    </RepeatButton>
+
+                    <!-- Height value -->
+                    <TextBox Margin="5,0,0,0"
+                             Text="{Binding GameSettingsViewModel.FieldHeight}"
+                             Style="{StaticResource TextBoxStyle}"/>
+
+                    <!-- Increase height repeat button -->
+                    <RepeatButton Margin="5,0,0,0"
+                                  Command="{Binding IncreaseHeightCommand}"
+                                  Style="{DynamicResource RepeatButtonDefaultStyle}">
+                        <Image Source="/Assets/Images/plus.png"
+                               Width="20"/>
+                    </RepeatButton>
+
+                </StackPanel>
+
+            </DockPanel>
+            
+            <!-- Bomb settings -->
+            <DockPanel Margin="0,5,0,0">
+
+                <Label DockPanel.Dock="Left"
+                       Content="Bombs:"
+                       Foreground="{DynamicResource TextForegroundBrush}"/>
+
+                <TextBox DockPanel.Dock="Right"
+                         Text="{Binding GameSettingsViewModel.NumberOfBombs}"
+                         Style="{StaticResource TextBoxStyle}"/>
+
+                <Slider Margin="20,0"
+                        VerticalAlignment="Center"
+                        Minimum="{Binding Source={x:Static vm:GameSettingsViewModel.MinimumBombs}}"
+                        Maximum="{Binding GameSettingsViewModel.MaximumBombs}"
+                        Value="{Binding GameSettingsViewModel.NumberOfBombs}"
+                        ap:SliderAttachedProperties.ClickDrag="True"
+                        Style="{StaticResource SliderStyle}"/>
+            </DockPanel>
+
+        </StackPanel>
+
+        <!-- DIfficulty buttons -->
+        <DockPanel HorizontalAlignment="Center"
+                   Margin="0,15,0,0"
+                   
+                   DockPanel.Dock="Top">
+
+            <!-- Beginner difficulty button -->
+            <Button DockPanel.Dock="Left"
+                    Content="Beginner"
+                    Command="{Binding BeginnerDifficultyCommand}"
+                    Style="{StaticResource ButtonDefaultStyle}"/>
+
+            <!-- Expert difficulty button -->
+            <Button DockPanel.Dock="Right"
+                    Margin="30,0,0,0"
+                    Content="Expert"
+                    Command="{Binding ExpertDifficultyCommand}"
+                    Style="{StaticResource ButtonDefaultStyle}"/>
+
+            <!-- Intermediate difficulty button -->
+            <Button Margin="30,0,0,0"
+                    Content="Intermediate"
+                    HorizontalAlignment="Center"
+                    Command="{Binding IntermediateDifficultyCommand}"
+                    Style="{StaticResource ButtonDefaultStyle}"/>
+
+        </DockPanel>
+
+        <Button DockPanel.Dock="Top"
+                Margin="0,25,0,0"
+                HorizontalAlignment="Center"
+                Content="PLAY"
+                FontWeight="Bold"
+                Command="{Binding PlayCommand}"
+                Style="{StaticResource ButtonDefaultStyle}"/>
+
+    </DockPanel>
 </Page>
