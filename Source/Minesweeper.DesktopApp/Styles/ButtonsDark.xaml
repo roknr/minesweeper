@@ -74,11 +74,11 @@
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
 
                     <Border x:Name="border"
-							CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-							Width="{TemplateBinding ActualHeight}"
-							SnapsToDevicePixels="True"
-							Cursor="Hand"
-							Background="{StaticResource BackgroundBrush}">
+                            CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                            Width="{TemplateBinding ActualHeight}"
+                            SnapsToDevicePixels="True"
+                            Cursor="Hand"
+                            Background="{StaticResource BackgroundBrush}">
                         <ContentPresenter x:Name="contentPresenter"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
                                           Content="{TemplateBinding Content}"
