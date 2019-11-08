@@ -54,6 +54,28 @@
 
     <!-- #endregion -->
 
+    <!-- #region Slider colors -->
+
+    <!-- The background brush for the application slider control -->
+    <LinearGradientBrush x:Key="SliderBackgroundBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+        <GradientStop Color="#FFC3C3C3" Offset="1"/>
+        <GradientStop Color="#FFC3C3C3" Offset="0"/>
+        <GradientStop Color="White" Offset="0.5"/>
+    </LinearGradientBrush>
+
+    <!-- The background brush for the application slider control when dragging -->
+    <LinearGradientBrush x:Key="SliderDraggingBackgroundBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+        <GradientStop Color="#FFCECECE" Offset="1"/>
+        <GradientStop Color="#FFCECECE" Offset="0"/>
+        <GradientStop Color="White" Offset="0.5"/>
+    </LinearGradientBrush>
+
+    <!-- The application slider border brush when dragging -->
+    <Color x:Key="SliderDraggingBorder">White</Color>
+    <SolidColorBrush x:Key="SliderDraggingBorderBrush" Color="{StaticResource SliderDraggingBorder}"/>
+
+    <!-- #endregion -->
+
     <!-- #region Window header specific colors -->
 
     <!-- Window header buttons on hover -->

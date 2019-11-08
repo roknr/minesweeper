@@ -24,4 +24,88 @@
         </Setter>
     </Style>
 
+    <!-- The default application button -->
+    <Style x:Key="ButtonDefaultStyle" TargetType="{x:Type Button}">
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextForegroundBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+
+                    <Border x:Name="border"
+                            BorderBrush="{DynamicResource PrimaryColorBrush}"
+                            BorderThickness="1"
+                            Background="{DynamicResource BackgroundBrush}"
+                            SnapsToDevicePixels="True"
+                            CornerRadius="15">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          Focusable="False"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <!-- When the mouse enters the button, the background animates to the application primary color -->
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="Background.Color"
+                                                    To="{StaticResource PrimaryColor}"
+                                                    Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- When the mouse leaves the button, the background animates back -->
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="Background.Color"
+                                                    FillBehavior="Stop"
+                                                    Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <!-- When the mouse enters the button, the font color animates -->
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                        To="White"
+                                        Duration="0:0:0.1"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+
+            <!-- When the mouse leaves the button, the font color animates back -->
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                        FillBehavior="Stop"
+                                        Duration="0:0:0.2"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

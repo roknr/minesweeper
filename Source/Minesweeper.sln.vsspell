@@ -11,10 +11,12 @@
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
   <IgnoredWords>
+    <Ignore>accessor</Ignore>
     <Ignore>app</Ignore>
     <Ignore>cancelable</Ignore>
+    <Ignore>endregion</Ignore>
     <Ignore>locator</Ignore>
     <Ignore>nullable</Ignore>
-    <Ignore>accessor</Ignore>
+    <Ignore>dragable</Ignore>
   </IgnoredWords>
 </SpellCheckerConfiguration>

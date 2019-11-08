@@ -12,8 +12,7 @@ namespace Minesweeper.DesktopApp.AttachedProperties
         #region Disable frame navigation bar
 
         /// <summary>
-        /// The <see cref="Frame"/> attached property that prevents the frame's
-        /// navigation bar from being visible.
+        /// The <see cref="Frame"/> attached property that prevents the frame's navigation bar from being visible.
         /// </summary>
         public static readonly DependencyProperty DisableNavigationProperty =
             DependencyProperty.RegisterAttached(
@@ -25,8 +24,7 @@ namespace Minesweeper.DesktopApp.AttachedProperties
         /// <summary>
         /// The <see cref="DisableNavigationProperty"/> get accessor.
         /// </summary>
-        /// <param name="frame">The frame whose <see cref="DisableNavigationProperty"/>'s
-        /// value to get.</param>
+        /// <param name="frame">The frame whose <see cref="DisableNavigationProperty"/>'s value to get.</param>
         /// <returns></returns>
         public static bool GetDisableNavigation(Frame frame)
         {
@@ -36,8 +34,7 @@ namespace Minesweeper.DesktopApp.AttachedProperties
         /// <summary>
         /// The <see cref="DisableNavigationProperty"/> set accessor.
         /// </summary>
-        /// <param name="frame">The frame whose <see cref="DisableNavigationProperty"/>'s
-        /// value to set.</param>
+        /// <param name="frame">The frame whose <see cref="DisableNavigationProperty"/>'s value to set.</param>
         /// <param name="value">The value to set.</param>
         public static void SetDisableNavigation(Frame frame, bool value)
         {
