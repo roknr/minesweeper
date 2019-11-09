@@ -3,10 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Minesweeper.DesktopApp.Windows"
-        xmlns:routing="clr-namespace:Minesweeper.DesktopApp.Routing"
         xmlns:vm="clr-namespace:Minesweeper.Core.ViewModels;assembly=Minesweeper.Core"
+        xmlns:ap="clr-namespace:Minesweeper.DesktopApp.AttachedProperties"
+        xmlns:routing="clr-namespace:Minesweeper.DesktopApp.Routing"
         xmlns:vc="clr-namespace:Minesweeper.DesktopApp.ValueConverters"
+        xmlns:local="clr-namespace:Minesweeper.DesktopApp.Windows"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -133,7 +134,9 @@
         </Style>
 
     </Window.Resources>
-    <Grid>
+
+    <Grid ap:UIElementAttachedProperties.FocusOnClick="True"
+          Background="Transparent">
 
         <Grid.RowDefinitions>
             <!-- The application content -->
