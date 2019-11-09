@@ -58,4 +58,27 @@
         </Setter>
     </Style>
 
+    <!-- Label with FontAwesome font family -->
+    <Style x:Key="LabelFontAwesomeStyle" TargetType="{x:Type Label}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Label}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <TextBlock HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   FontFamily="{StaticResource FontAwesome}"
+                                   Text="{TemplateBinding Content}"
+                                   TextAlignment="Center"
+                                   FontSize="25"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

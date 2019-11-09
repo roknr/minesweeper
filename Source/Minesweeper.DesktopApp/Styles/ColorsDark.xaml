@@ -75,6 +75,32 @@
     <SolidColorBrush x:Key="SliderDraggingBorderBrush" Color="{StaticResource SliderDraggingBorder}"/>
 
     <!-- #endregion -->
+    
+    <!-- #region Tile button colors -->
+
+    <!-- The default game page tile button background brush -->
+    <RadialGradientBrush x:Key="TileBackgroundBrush">
+        <GradientStop Color="#FFE6E6E6" Offset="1"/>
+        <GradientStop Color="White" Offset="0"/>
+    </RadialGradientBrush>
+    
+    <!-- The game page tile button background brush when flagged -->
+    <RadialGradientBrush x:Key="TileFlaggedBackgroundBrush">
+        <GradientStop Color="#FFF5B324" Offset="1"/>
+        <GradientStop Color="#FFFFE19E" Offset="0"/>
+    </RadialGradientBrush>
+
+    <!-- The game page tile button background brush when bomb is uncovered -->
+    <RadialGradientBrush x:Key="TileBombBackgroundBrush">
+        <GradientStop Color="#FFF52424" Offset="0"/>
+        <GradientStop Color="#FFFF7272" Offset="1"/>
+    </RadialGradientBrush>
+
+    <!-- Tile button disabled -->
+    <Color x:Key="TileDisabled">#b0b0b5</Color>
+    <SolidColorBrush x:Key="TileDisabledBrush" Color="{StaticResource TileDisabled}"/>
+
+    <!-- #endregion -->
 
     <!-- #region Window header specific colors -->
 

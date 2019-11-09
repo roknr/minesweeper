@@ -26,5 +26,8 @@
     <!-- Declare icons -->
     <system:String x:Key="IconMinimize">&#xf2d1;</system:String>
     <system:String x:Key="IconClose">&#xf00d;</system:String>
+    <system:String x:Key="IconBomb">&#xf1e2;</system:String>
+    <system:String x:Key="IconClock">&#xf017;</system:String>
+    <system:String x:Key="IconBack">&#xf060;</system:String>
 
 </ResourceDictionary>

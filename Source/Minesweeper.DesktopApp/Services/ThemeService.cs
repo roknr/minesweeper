@@ -20,7 +20,7 @@ namespace Minesweeper.DesktopApp.Services
         /// <summary>
         /// The index at which the Buttons{theme}.xaml are placed in the App.xam file resource dictionary.
         /// </summary>
-        private const int ButtonsThemeIndex = 3;
+        private const int ButtonsThemeIndex = 4;
 
         // The theme dictionary URIs
         private readonly Uri mColorsLightDictionaryUri = new Uri(@"Styles/ColorsLight.xaml", UriKind.Relative);

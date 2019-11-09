@@ -34,7 +34,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-
                     <Border x:Name="border"
                             BorderBrush="{DynamicResource PrimaryColorBrush}"
                             BorderThickness="1"
@@ -169,6 +168,175 @@
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- The game page tile button -->
+    <Style x:Key="TileButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Height" Value="21"/>
+        <Setter Property="Width" Value="21"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{DynamicResource TileBackgroundBrush}"
+                            SnapsToDevicePixels="True"
+                            CornerRadius="2">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          Focusable="False"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+
+                        <!-- When the mouse enters the button, the opacity is lowered -->
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                     To="0.7"
+                                                     Duration="0:0:0.05"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- When the mouse leaves the button, the opacity is defaulted back to 1 -->
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                     To="1"
+                                                     Duration="0:0:0.05"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!-- When the tile is pressed down with the left mouse button -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="White"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="Black"/>
+                        </Trigger>
+
+                        <!-- When the tile is disabled (has been uncovered / clicked) -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource TileDisabledBrush}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                        </Trigger>
+
+                        <!-- When Tile is clicked -->
+                        <DataTrigger Binding="{Binding Tile.LeftClickState}" Value="Clicked">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+
+                        <!-- When Tile is clicked AND its State is Bomb -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Clicked"/>
+                                <Condition Binding="{Binding Tile.State}" Value="Bomb"/>
+                            </MultiDataTrigger.Conditions>
+
+                            <MultiDataTrigger.Setters>
+                                <!-- Button content is the bomb/mine image -->
+                                <Setter Property="Content" Value="{StaticResource ImageMine}"/>
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource TileBombBackgroundBrush}"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- When Tile is clicked AND its State is Number -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Clicked"/>
+                                <Condition Binding="{Binding Tile.State}" Value="Number"/>
+                            </MultiDataTrigger.Conditions>
+
+                            <MultiDataTrigger.Setters>
+                                <!-- Button content is the number of adjacent bombs -->
+                                <Setter Property="Content" Value="{Binding Tile.AdjacentBombs}"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- When Tile is RightClicked -->
+                        <!-- Flag -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Unclicked" />
+                                <Condition Binding="{Binding Tile.RightClickState}" Value="Flag" />
+                            </MultiDataTrigger.Conditions>
+
+                            <MultiDataTrigger.Setters>
+                                <!-- Button content is the flag image -->
+                                <Setter Property="Content" Value="{StaticResource ImageFlag}" />
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource TileFlaggedBackgroundBrush}"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- Question mark -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Unclicked" />
+                                <Condition Binding="{Binding Tile.RightClickState}" Value="QuestionMark" />
+                            </MultiDataTrigger.Conditions>
+
+                            <MultiDataTrigger.Setters>
+                                <!--Button content is the question mark image -->
+                                <Setter Property="Content" Value="{StaticResource ImageQuestionMark}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- Not clicked (default) -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Unclicked" />
+                                <Condition Binding="{Binding Tile.RightClickState}" Value="Unclicked" />
+                            </MultiDataTrigger.Conditions>
+
+                            <MultiDataTrigger.Setters>
+                                <!-- Button content is empty -->
+                                <Setter Property="Content" Value=""/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- Set the foreground property based on the AdajcentBombs property -->
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="1">
+                            <Setter Property="Foreground" Value="Blue"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="2">
+                            <Setter Property="Foreground" Value="Green"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="3">
+                            <Setter Property="Foreground" Value="Red"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="4">
+                            <Setter Property="Foreground" Value="DarkBlue"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="5">
+                            <Setter Property="Foreground" Value="DarkRed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="6">
+                            <Setter Property="Foreground" Value="#009baf"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="7">
+                            <Setter Property="Foreground" Value="Black"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="8">
+                            <Setter Property="Foreground" Value="#af00a3"/>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- The mine image -->
+    <Image x:Key="ImageMine"
+           x:Shared="false"
+           Source="/Assets/Images/mine.png"
+           Width="18"
+           Height="18"/>
+
+    <!-- The flag image -->
+    <Image x:Key="ImageFlag"
+           x:Shared="false"
+           Source="/Assets/Images/flag.png"
+           Width="18"
+           Height="18"/>
+
+    <!-- The question mark image -->
+    <Image x:Key="ImageQuestionMark"
+           x:Shared="false"
+           Source="/Assets/Images/question.png"
+           Width="16"
+           Height="16"/>
+
+</ResourceDictionary>

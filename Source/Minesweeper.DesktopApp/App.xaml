@@ -8,6 +8,7 @@
                 <!-- NOTE: order is important - the first ones referenced are used in other styles -->
                 <ResourceDictionary Source="Styles/ColorsLight.xaml"/>
                 <ResourceDictionary Source="Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="Styles/Images.xaml"/>
 
                 <ResourceDictionary Source="Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Styles/ButtonsLight.xaml"/>
