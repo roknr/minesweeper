@@ -8,12 +8,12 @@ namespace Minesweeper.Core.ValueObjects
         #region Public properties
 
         /// <summary>
-        /// The field width.
+        /// The field width (columns).
         /// </summary>
         public int FieldWidth { get; }
 
         /// <summary>
-        /// The field height.
+        /// The field height (rows).
         /// </summary>
         public int FieldHeight { get; }
 

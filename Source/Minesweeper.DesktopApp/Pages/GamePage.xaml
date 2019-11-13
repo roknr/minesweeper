@@ -4,13 +4,112 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450"
+      d:DesignWidth="500"
       Title="GamePage">
 
+    <Page.Resources>
+
+        <!-- Tile Button data template -->
+        <DataTemplate x:Key="TileButtonDataTemplate">
+            <Button Command="{Binding UncoverCommand}"
+                    Style="{StaticResource TileButtonStyle}">
+                <Button.InputBindings>
+                    <MouseBinding Gesture="RightClick"
+                                  Command="{Binding ToggleMarkCommand}"/>
+                </Button.InputBindings>
+            </Button>
+        </DataTemplate>
+
+        <!-- Field Row data template -->
+        <DataTemplate x:Key="FieldRowDataTemplate">
+            <ItemsControl ItemsSource="{Binding}"
+                          ItemTemplate="{StaticResource TileButtonDataTemplate}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid>
-        <Label HorizontalAlignment="Stretch"
-               VerticalAlignment="Stretch"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center">Game page</Label>
+        <Grid.RowDefinitions>
+            <!-- Time and bombs label row-->
+            <RowDefinition Height="45"/>
+            <!-- Game field row -->
+            <RowDefinition Height="*"/>
+            <!-- Back button row -->
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Number of bombs and time -->
+        <DockPanel HorizontalAlignment="Center"
+                   LastChildFill="False">
+
+            <!-- Bomb icon -->
+            <Label DockPanel.Dock="Left"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource TextForegroundBrush}"
+                   Content="{StaticResource IconBomb}"
+                   Style="{StaticResource LabelFontAwesomeStyle}"/>
+
+            <!-- Number of bombs left -->
+            <Label DockPanel.Dock="Left"
+                   VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   MinWidth="30"
+                   Foreground="{DynamicResource TextForegroundBrush}"
+                   Content="{Binding GameField.BombsLeft}"/>
+
+            <!-- Number of bombs left -->
+            <Label DockPanel.Dock="Right"
+                   VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   MinWidth="30"
+                   Foreground="{DynamicResource TextForegroundBrush}">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}:{1:00}">
+                            <Binding Path="ElapsedTime.Minutes"/>
+                            <Binding Path="ElapsedTime.Seconds"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Label>
+
+            <!-- Clock icon -->
+            <Label DockPanel.Dock="Right"
+                   Margin="40,0,0,0"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource TextForegroundBrush}"
+                   Content="{StaticResource IconClock}"
+                   Style="{StaticResource LabelFontAwesomeStyle}"/>
+
+        </DockPanel>
+
+        <!-- The game field -->
+        <ItemsControl Grid.Row="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      ItemsSource="{Binding GameField.Field}"
+                      ItemTemplate="{StaticResource FieldRowDataTemplate}"/>
+
+        <!-- Back button -->
+        <Button Grid.Row="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="80"
+                Margin="0,15,0,10"
+                Style="{StaticResource ButtonDefaultStyle}"
+                Command="{Binding ExitCommand}">
+            <TextBlock FontFamily="{StaticResource FontAwesome}">
+                <Run Text="{StaticResource IconBack}"/>
+                <Run Text=" Back"/>
+            </TextBlock>
+        </Button>
     </Grid>
 </Page>

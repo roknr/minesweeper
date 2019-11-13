@@ -233,22 +233,22 @@
                             <Setter Property="BorderBrush" TargetName="border" Value="Black"/>
                         </Trigger>
 
-                        <!-- When the tile is disabled (has been uncovered / clicked) -->
+                        <!-- When the tile is disabled (has been uncovered) -->
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" TargetName="border" Value="{DynamicResource TileDisabledBrush}"/>
                             <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
                         </Trigger>
 
-                        <!-- When Tile is clicked -->
-                        <DataTrigger Binding="{Binding Tile.LeftClickState}" Value="Clicked">
+                        <!-- When Tile is uncovered -->
+                        <DataTrigger Binding="{Binding IsUncovered}" Value="True">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
 
-                        <!-- When Tile is clicked AND its State is Bomb -->
+                        <!-- When Tile is uncovered AND its State is Bomb -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Clicked"/>
-                                <Condition Binding="{Binding Tile.State}" Value="Bomb"/>
+                                <Condition Binding="{Binding IsUncovered}" Value="True"/>
+                                <Condition Binding="{Binding State}" Value="Bomb"/>
                             </MultiDataTrigger.Conditions>
 
                             <MultiDataTrigger.Setters>
@@ -258,25 +258,25 @@
                             </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
 
-                        <!-- When Tile is clicked AND its State is Number -->
+                        <!-- When Tile is uncovered AND its State is Number -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Clicked"/>
-                                <Condition Binding="{Binding Tile.State}" Value="Number"/>
+                                <Condition Binding="{Binding IsUncovered}" Value="True"/>
+                                <Condition Binding="{Binding State}" Value="Number"/>
                             </MultiDataTrigger.Conditions>
 
                             <MultiDataTrigger.Setters>
                                 <!-- Button content is the number of adjacent bombs -->
-                                <Setter Property="Content" Value="{Binding Tile.AdjacentBombs}"/>
+                                <Setter Property="Content" Value="{Binding AdjacentBombs}"/>
                             </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
 
-                        <!-- When Tile is RightClicked -->
+                        <!-- When Tile is marked -->
                         <!-- Flag -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Unclicked" />
-                                <Condition Binding="{Binding Tile.RightClickState}" Value="Flag" />
+                                <Condition Binding="{Binding IsUncovered}" Value="False" />
+                                <Condition Binding="{Binding MarkedState}" Value="Flag" />
                             </MultiDataTrigger.Conditions>
 
                             <MultiDataTrigger.Setters>
@@ -289,8 +289,8 @@
                         <!-- Question mark -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Unclicked" />
-                                <Condition Binding="{Binding Tile.RightClickState}" Value="QuestionMark" />
+                                <Condition Binding="{Binding IsUncovered}" Value="False" />
+                                <Condition Binding="{Binding MarkedState}" Value="QuestionMark" />
                             </MultiDataTrigger.Conditions>
 
                             <MultiDataTrigger.Setters>
@@ -299,11 +299,11 @@
                             </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
 
-                        <!-- Not clicked (default) -->
+                        <!-- Not marked (default) -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Tile.LeftClickState}" Value="Unclicked" />
-                                <Condition Binding="{Binding Tile.RightClickState}" Value="Unclicked" />
+                                <Condition Binding="{Binding IsUncovered}" Value="False" />
+                                <Condition Binding="{Binding MarkedState}" Value="Unmarked" />
                             </MultiDataTrigger.Conditions>
 
                             <MultiDataTrigger.Setters>
@@ -313,28 +313,28 @@
                         </MultiDataTrigger>
 
                         <!-- Set the foreground property based on the AdajcentBombs property -->
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="1">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="1">
                             <Setter Property="Foreground" Value="Blue"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="2">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="2">
                             <Setter Property="Foreground" Value="Green"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="3">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="3">
                             <Setter Property="Foreground" Value="Red"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="4">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="4">
                             <Setter Property="Foreground" Value="DarkBlue"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="5">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="5">
                             <Setter Property="Foreground" Value="DarkRed"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="6">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="6">
                             <Setter Property="Foreground" Value="#009baf"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="7">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="7">
                             <Setter Property="Foreground" Value="Black"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Tile.AdjacentBombs}" Value="8">
+                        <DataTrigger Binding="{Binding AdjacentBombs}" Value="8">
                             <Setter Property="Foreground" Value="#af00a3"/>
                         </DataTrigger>
                     </ControlTemplate.Triggers>

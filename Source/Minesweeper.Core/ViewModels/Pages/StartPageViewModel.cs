@@ -1,4 +1,7 @@
 using Minesweeper.Core.Commands;
+using Minesweeper.Core.Interfaces.Routing;
+using Minesweeper.Core.Routing;
+using Minesweeper.Core.ValueObjects;
 
 namespace Minesweeper.Core.ViewModels.Pages
 {
@@ -77,7 +80,13 @@ namespace Minesweeper.Core.ViewModels.Pages
             IntermediateDifficultyCommand = new RelayCommand(p => GameSettingsViewModel = GameSettingsViewModel.IntermediateDifficulty);
             ExpertDifficultyCommand = new RelayCommand(p => GameSettingsViewModel = GameSettingsViewModel.ExpertDifficulty);
 
-            PlayCommand = new RelayCommand(p => { /* TODO */ });
+            PlayCommand = new RelayCommand(p =>
+            {
+                var router = IoC.Get<IRouter>();
+                var argument = new GameSettings(GameSettingsViewModel.FieldWidth, GameSettingsViewModel.FieldHeight, GameSettingsViewModel.NumberOfBombs);
+
+                router.NavigateTo(Routes.GamePageRoute, argument);
+            });
         }
 
         #endregion
