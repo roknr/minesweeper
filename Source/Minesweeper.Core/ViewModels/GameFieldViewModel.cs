@@ -155,19 +155,25 @@ namespace Minesweeper.Core.ViewModels
                     }
 
                     // Handle tile uncovering by listening for the tile's uncovering event
-                    tile.Uncovering += (o, e) => OnTileUncovering((TileViewModel)o);
+                    tile.Uncovering += (o, e) =>
+                    {
+                        var uncoveredTile = (TileViewModel)o;
+                        OnTileUncovering(uncoveredTile.Row, uncoveredTile.Column);
+                    };
                 }
             }
         }
 
         /// <summary>
-        /// Sets up the game field by making sure the specified uncovered tile is never a bomb.
+        /// Sets up the game field by making sure the specified uncovered tile (identified by
+        /// its row and column) is never a bomb.
         /// </summary>
-        /// <param name="uncoveredTile">The uncovered tile.</param>
-        private void SetupField(TileViewModel uncoveredTile)
+        /// <param name="uncoveredTileRow">The row of the uncovered tile.</param>
+        /// <param name="uncoveredTileColumn">The column of the uncovered tile.</param>
+        private void SetupField(int uncoveredTileRow, int uncoveredTileColumn)
         {
             // Generate the places of bombs on the field, outside of the tile radius
-            var bombField = GenerateBombs(uncoveredTile);
+            var bombField = GenerateBombs(uncoveredTileRow, uncoveredTileColumn);
 
             // Generate the tile state and adjacency matrices based on the generated bombs
             var matrices = GenerateTileStateAndAdjacencyMatrices(bombField);
@@ -182,9 +188,10 @@ namespace Minesweeper.Core.ViewModels
         /// represented with the corresponding coordinates. Also generates the bombs outside of the
         /// uncovered tile's adjacent radius.
         /// </summary>
-        /// <param name="uncoveredTile">The uncovered tile.</param>
+        /// <param name="uncoveredTileRow">The row of the uncovered tile.</param>
+        /// <param name="uncoveredTileColumn">The column of the uncovered tile.</param>
         /// <returns></returns>
-        private bool[,] GenerateBombs(TileViewModel uncoveredTile)
+        private bool[,] GenerateBombs(int uncoveredTileRow, int uncoveredTileColumn)
         {
             // Represents the bombs on the field
             bool[,] bombs = new bool[mGameSettings.FieldHeight, mGameSettings.FieldWidth];
@@ -199,8 +206,8 @@ namespace Minesweeper.Core.ViewModels
                     possibleCoordinates.Add(new Tuple<int, int>(row, column));
 
             // From all coordinates, remove the uncovered tile and the ones adjacent to it
-            possibleCoordinates.Remove(new Tuple<int, int>(uncoveredTile.Row, uncoveredTile.Column));
-            bombs.ForEachAdjacent(uncoveredTile.Row, uncoveredTile.Column, (b, row, column) =>
+            possibleCoordinates.Remove(new Tuple<int, int>(uncoveredTileRow, uncoveredTileColumn));
+            bombs.ForEachAdjacent(uncoveredTileRow, uncoveredTileColumn, (b, row, column) =>
             {
                 // Use "new" because Tuple comparison works by comparing component values instead of object references
                 possibleCoordinates.Remove(new Tuple<int, int>(row, column));
@@ -268,14 +275,15 @@ namespace Minesweeper.Core.ViewModels
         /// <summary>
         /// Handles the uncovering of a tile.
         /// </summary>
-        /// <param name="uncoveredTile">The uncovered tile.</param>
-        private void OnTileUncovering(TileViewModel uncoveredTile)
+        /// <param name="uncoveredTileRow">The row of the uncovered tile.</param>
+        /// <param name="uncoveredTileColumn">The column of the uncovered tile.</param>
+        private void OnTileUncovering(int uncoveredTileRow, int uncoveredTileColumn)
         {
             // If this is the first tile uncover
             if (mIsFirstUncover)
             {
                 // Set up the field, so that the first uncovered tile is never a bomb
-                SetupField(uncoveredTile);
+                SetupField(uncoveredTileRow, uncoveredTileColumn);
 
                 // It's not the first uncover anymore
                 mIsFirstUncover = false;
@@ -283,6 +291,9 @@ namespace Minesweeper.Core.ViewModels
                 // Raise the event that the game has started
                 GameStarted?.Invoke(this, EventArgs.Empty);
             }
+
+            // Get the tile that was uncovered from its coordinates
+            var uncoveredTile = mField[uncoveredTileRow, uncoveredTileColumn];
 
             // It's not the first uncover, so check if the uncovered tile is a bomb
             if (uncoveredTile.State == TileState.Bomb)
