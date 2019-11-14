@@ -6,7 +6,8 @@
       mc:Ignorable="d" 
       d:DesignHeight="450"
       d:DesignWidth="500"
-      Title="GamePage">
+      Title="GamePage"
+      Margin="5,0">
 
     <Page.Resources>
 
@@ -112,4 +113,5 @@
             </TextBlock>
         </Button>
     </Grid>
+
 </Page>
