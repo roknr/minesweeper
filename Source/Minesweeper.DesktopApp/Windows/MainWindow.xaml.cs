@@ -1,4 +1,5 @@
 using System.Windows;
+using Minesweeper.DesktopApp.ViewModels;
 
 namespace Minesweeper.DesktopApp.Windows
 {

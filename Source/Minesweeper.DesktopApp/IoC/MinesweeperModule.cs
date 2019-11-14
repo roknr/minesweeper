@@ -30,6 +30,10 @@ namespace Minesweeper.DesktopApp.IoC
             Bind<IThemeService>()
                 .To<ThemeService>()
                 .InTransientScope();
+
+            Bind<IModalService>()
+                .To<ModalService>()
+                .InTransientScope();
         }
     }
 }

@@ -14,9 +14,10 @@
     <Ignore>accessor</Ignore>
     <Ignore>app</Ignore>
     <Ignore>cancelable</Ignore>
+    <Ignore>dragable</Ignore>
     <Ignore>endregion</Ignore>
     <Ignore>locator</Ignore>
     <Ignore>nullable</Ignore>
-    <Ignore>dragable</Ignore>
+    <Ignore>modals</Ignore>
   </IgnoredWords>
 </SpellCheckerConfiguration>

@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Timers;
 using Minesweeper.Core.Commands;
 using Minesweeper.Core.Interfaces.Routing;
+using Minesweeper.Core.Interfaces.Services;
 using Minesweeper.Core.Routing;
 using Minesweeper.Core.ValueObjects;
+using Minesweeper.Core.ViewModels.Modals;
 
 namespace Minesweeper.Core.ViewModels.Pages
 {
@@ -72,22 +74,24 @@ namespace Minesweeper.Core.ViewModels.Pages
                 mStopWatch.Start();
                 mTimer.Start();
             };
-            GameField.GameOver += (o, e) =>
+            GameField.GameOver += async (o, e) =>
             {
                 // Stop measuring the time when the game is over
                 mStopWatch.Stop();
                 mTimer.Stop();
 
-                // TODO: show a dialog
+                // Show a modal with content based on the game result
+                ConfirmModalViewModel modalViewModel;
                 if (e.PlayerWon)
-                {
-
-                }
+                    modalViewModel = new ConfirmModalViewModel("Congratulations", "You successfully finished the game", "OK");
                 else
-                {
+                    modalViewModel = new ConfirmModalViewModel("Game Over", "You clicked on a bomb", "OK");
 
-                }
+                // And wait until the modal is exited
+                var modalService = IoC.Get<IModalService>();
+                await modalService.ShowConfirmModal(modalViewModel);
 
+                // Handle game over
                 OnGameOver();
             };
 

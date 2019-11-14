@@ -1,21 +1,20 @@
 using System.Windows;
-using System.Windows.Input;
 using Minesweeper.Core.Commands;
 using Minesweeper.Core.ViewModels;
 
-namespace Minesweeper.DesktopApp.Windows
+namespace Minesweeper.DesktopApp.ViewModels
 {
     /// <summary>
-    /// The view model for the main window.
+    /// The base view model for all application window view models.
     /// </summary>
-    public class MainWindowViewModel : ViewModelBase
+    public abstract class WindowViewModelBase : ViewModelBase
     {
-        #region Private members
+        #region Protected members
 
         /// <summary>
         /// The window that this view model controls.
         /// </summary>
-        private readonly MainWindow mWindow;
+        protected readonly Window mWindow;
 
         #endregion
 
@@ -39,11 +38,6 @@ namespace Minesweeper.DesktopApp.Windows
         #region Commands
 
         /// <summary>
-        /// The command that opens the icon context menu.
-        /// </summary>
-        public IRelayCommand OpenIconMenuCommand { get; }
-
-        /// <summary>
         /// The command that minimizes the window.
         /// </summary>
         public IRelayCommand MinimizeCommand { get; }
@@ -60,31 +54,16 @@ namespace Minesweeper.DesktopApp.Windows
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
+        /// Initializes a new instance of the <see cref="WindowViewModelBase"/> class
+        /// with the specified window.
         /// </summary>
-        /// <param name="mainWindow">The window that this view model controls.</param>
-        public MainWindowViewModel(MainWindow mainWindow)
+        /// <param name="window">The window that this view model controls.</param>
+        public WindowViewModelBase(Window window)
         {
-            mWindow = mainWindow;
+            mWindow = window;
 
-            OpenIconMenuCommand = new RelayCommand(p => SystemCommands.ShowSystemMenu(mWindow, GetCurrentMousePosition()));
             MinimizeCommand = new RelayCommand(p => mWindow.WindowState = WindowState.Minimized);
             CloseCommand = new RelayCommand(p => mWindow.Close());
-        }
-
-        #endregion
-
-        #region Private helpers
-
-        /// <summary>
-        /// Gets the current position of the mouse.
-        /// </summary>
-        /// <returns></returns>
-        private Point GetCurrentMousePosition()
-        {
-            var position = Mouse.GetPosition(mWindow);
-
-            return new Point(position.X + mWindow.Left, position.Y + mWindow.Top);
         }
 
         #endregion

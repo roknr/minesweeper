@@ -1,0 +1,32 @@
+﻿<local:ModalBase x:Class="Minesweeper.DesktopApp.Modals.ConfirmModal"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:Minesweeper.DesktopApp.Modals"
+                 mc:Ignorable="d"
+                 d:DesignWidth="250"
+                 d:DesignHeight="150">
+
+    <!-- The modal content -->
+    <DockPanel LastChildFill="False">
+
+        <!-- Message -->
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="15,15,15,0"
+                   HorizontalAlignment="Center"
+                   Foreground="{StaticResource TextForegroundBrush}"
+                   TextAlignment="Center"
+                   Text="{Binding Message}"/>
+
+        <!-- Confirm button -->
+        <Button DockPanel.Dock="Bottom"
+                Width="70"
+                Margin="10,15,10,10"
+                FontWeight="Bold"
+                Content="{Binding ConfirmText}"
+                Command="{Binding CloseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModalBase}}}"
+                Style="{StaticResource ButtonDefaultStyle}"/>
+    </DockPanel>
+
+</local:ModalBase>
