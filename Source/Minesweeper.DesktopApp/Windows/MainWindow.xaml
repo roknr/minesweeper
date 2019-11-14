@@ -125,8 +125,11 @@
                                             ClipToBounds="True">
                                         <ContentPresenter Content="{TemplateBinding Content}"/>
                                     </Border>
+
                                 </Grid>
+
                             </Grid>
+
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
