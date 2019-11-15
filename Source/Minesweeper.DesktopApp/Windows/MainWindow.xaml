@@ -155,7 +155,7 @@
                 Style="{StaticResource ButtonThemeIconStyle}"
                 Command="{Binding ApplicationViewModel.ChangeThemeCommand,
                                   Source={x:Static vm:ViewModelLocator.Instance}}"
-                Content="{Binding ApplicationViewModel.CurrentTheme,
+                Content="{Binding ApplicationViewModel.UserSettings.Theme,
                                   Source={x:Static vm:ViewModelLocator.Instance},
                                   Converter={vc:ApplicationThemeToIconValueConverter}}"/>
     </Grid>

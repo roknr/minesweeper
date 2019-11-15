@@ -34,6 +34,10 @@ namespace Minesweeper.DesktopApp.IoC
             Bind<IModalService>()
                 .To<ModalService>()
                 .InTransientScope();
+
+            Bind<IUserSettingsService>()
+                .To<SimpleJsonUserSettingsService>()
+                .InTransientScope();
         }
     }
 }
