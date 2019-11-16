@@ -351,3 +351,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# AdvancedInstaller
+# Advanced Installer caches and default build output
+*-cache/
+*-SetupFiles/
+Prerequisites/

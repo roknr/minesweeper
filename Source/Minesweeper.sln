@@ -16,20 +16,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minesweeper.Core", "Mineswe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{F5F07C3A-8461-4BE1-AFC9-170E2714FBA5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{6212D8AC-02B9-4B7F-A6DF-203562418EAF}"
+EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Minesweeper.DesktopApp.Installer", "Minesweeper.DesktopApp.Installer\Minesweeper.DesktopApp.Installer.aiproj", "{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35B47D4A-BAE1-430F-8462-0FCF6E9F250B}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{35B47D4A-BAE1-430F-8462-0FCF6E9F250B}.All|Any CPU.Build.0 = Release|Any CPU
 		{35B47D4A-BAE1-430F-8462-0FCF6E9F250B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35B47D4A-BAE1-430F-8462-0FCF6E9F250B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35B47D4A-BAE1-430F-8462-0FCF6E9F250B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35B47D4A-BAE1-430F-8462-0FCF6E9F250B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C83F82-50BD-4380-B4A6-07C4FA0AEBA6}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{12C83F82-50BD-4380-B4A6-07C4FA0AEBA6}.All|Any CPU.Build.0 = Release|Any CPU
 		{12C83F82-50BD-4380-B4A6-07C4FA0AEBA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{12C83F82-50BD-4380-B4A6-07C4FA0AEBA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12C83F82-50BD-4380-B4A6-07C4FA0AEBA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12C83F82-50BD-4380-B4A6-07C4FA0AEBA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA}.All|Any CPU.ActiveCfg = DefaultBuild
+		{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA}.All|Any CPU.Build.0 = DefaultBuild
+		{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA}.Debug|Any CPU.Build.0 = DefaultBuild
+		{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA}.Release|Any CPU.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +52,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{35B47D4A-BAE1-430F-8462-0FCF6E9F250B} = {F5F07C3A-8461-4BE1-AFC9-170E2714FBA5}
 		{12C83F82-50BD-4380-B4A6-07C4FA0AEBA6} = {F5F07C3A-8461-4BE1-AFC9-170E2714FBA5}
+		{CB478577-0E11-4DF6-BE7D-F6C6F42C3CAA} = {6212D8AC-02B9-4B7F-A6DF-203562418EAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CF67996-0F5A-4534-9C3D-08D4A6F27D87}
