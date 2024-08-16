@@ -1,15 +1,14 @@
 using Minesweeper.Core.Enums;
 
-namespace Minesweeper.Core.Models
+namespace Minesweeper.Core.Models;
+
+/// <summary>
+/// The user's settings model.
+/// </summary>
+public class UserSettingsModel
 {
     /// <summary>
-    /// The user's settings model.
+    /// The user's application theme.
     /// </summary>
-    public class UserSettingsModel
-    {
-        /// <summary>
-        /// The user's application theme.
-        /// </summary>
-        public ApplicationTheme Theme { get; set; }
-    }
+    public ApplicationTheme Theme { get; set; }
 }

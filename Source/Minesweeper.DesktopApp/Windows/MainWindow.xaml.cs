@@ -1,21 +1,20 @@
 using System.Windows;
 using Minesweeper.DesktopApp.ViewModels;
 
-namespace Minesweeper.DesktopApp.Windows
+namespace Minesweeper.DesktopApp.Windows;
+
+/// <summary>
+/// The main application window.
+/// </summary>
+public partial class MainWindow : Window
 {
     /// <summary>
-    /// The main application window.
+    /// Initializes a new instance of the <see cref="MainWindow"/> class.
     /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
-        /// </summary>
-        public MainWindow()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            DataContext = new MainWindowViewModel(this);
-        }
+        DataContext = new MainWindowViewModel(this);
     }
 }

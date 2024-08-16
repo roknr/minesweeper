@@ -1,18 +1,17 @@
 using System.Windows.Controls;
 
-namespace Minesweeper.DesktopApp.Pages
+namespace Minesweeper.DesktopApp.Pages;
+
+/// <summary>
+/// The application game page.
+/// </summary>
+public partial class GamePage : Page
 {
     /// <summary>
-    /// The application game page.
+    /// Initializes a new instance of the <see cref="GamePage"/> class.
     /// </summary>
-    public partial class GamePage : Page
+    public GamePage()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GamePage"/> class.
-        /// </summary>
-        public GamePage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
