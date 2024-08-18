@@ -11,12 +11,19 @@ public class GameOverEventArgs : EventArgs
     public bool PlayerWon { get; }
 
     /// <summary>
+    /// Value indicating whether the cause of the game over was a direct click on a bomb.
+    /// </summary>
+    public bool WasDirectBombClick { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="TileMarkedEventArgs"/> class
     /// with the specified flag indicating whether the player won or lost.
     /// </summary>
     /// <param name="playerWon">Flag, indicating whether the player won or lost the game.</param>
-    public GameOverEventArgs(bool playerWon)
+    /// <param name="wasDirectBombClick">Flag indicating whether the cause of the game over was a direct click on a bomb.</param>
+    public GameOverEventArgs(bool playerWon, bool wasDirectBombClick)
     {
         PlayerWon = playerWon;
+        WasDirectBombClick = wasDirectBombClick;
     }
 }

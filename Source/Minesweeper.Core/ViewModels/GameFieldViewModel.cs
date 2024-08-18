@@ -125,8 +125,7 @@ public class GameFieldViewModel : ViewModelBase
                 if (matrices == null)
                 {
                     // Create empty tiles
-                    tile = new TileViewModel(row, column, 0, TileState.Empty);
-                    Field[row].Add(tile);
+                    tile = new TileViewModel(row, column, 0, TileState.Empty, canToggleMark: false);
                 }
                 else
                 {
@@ -135,7 +134,8 @@ public class GameFieldViewModel : ViewModelBase
                         row,
                         column,
                         matrices.Value.AdjacencyMatrix[row, column],
-                        matrices.Value.TileStates[row, column]);
+                        matrices.Value.TileStates[row, column],
+                        canToggleMark: true);
 
                     // If the tile has a bomb on it, add it to the list of bombs
                     if (tile.State == TileState.Bomb)
@@ -150,11 +150,11 @@ public class GameFieldViewModel : ViewModelBase
 
                     // Only allow tile marking after first uncover, by listening for the tile's marked event
                     tile.Marked += (o, e) => OnTileMarked(e.NewMarkedState);
-
-                    // Add the tile to the game field
-                    Field[row].Add(tile);
-                    _field[row, column] = tile;
                 }
+
+                // Add the tile to the game field
+                Field[row].Add(tile);
+                _field[row, column] = tile;
 
                 // Handle tile uncovering by listening for the tile's uncovering event
                 tile.Uncovering += (o, e) =>
@@ -162,6 +162,10 @@ public class GameFieldViewModel : ViewModelBase
                     var uncoveredTile = (TileViewModel)o!;
                     OnTileUncovering(uncoveredTile.Row, uncoveredTile.Column);
                 };
+
+                tile.AdjacentUncovering += (o, e) => OnTileAdjacentUncovering((TileViewModel)o!);
+                tile.HighlightStarted += (o, e) => OnTileHighlight((TileViewModel)o!, highlight: true);
+                tile.HighlightEnded += (o, e) => OnTileHighlight((TileViewModel)o!, highlight: false);
             }
         }
     }
@@ -213,11 +217,12 @@ public class GameFieldViewModel : ViewModelBase
 
         // From all coordinates, remove the uncovered tile and the ones adjacent to it
         possibleCoordinates.Remove(new Tuple<int, int>(uncoveredTileRow, uncoveredTileColumn));
-        bombs.ForEachAdjacent(uncoveredTileRow, uncoveredTileColumn, (_, row, column) =>
+
+        foreach (var (_, row, column) in bombs.GetAdjacentElementsWithIndex(uncoveredTileRow, uncoveredTileColumn))
         {
             // Use "new" because Tuple comparison works by comparing component values instead of object references
             possibleCoordinates.Remove(new Tuple<int, int>(row, column));
-        });
+        }
 
         // Generate the specified number of bombs
         for (var i = 0; i < _gameSettings.NumberOfBombs; i++)
@@ -256,16 +261,14 @@ public class GameFieldViewModel : ViewModelBase
             for (var column = 0; column < _gameSettings.FieldWidth; column++)
             {
                 // Check each adjacent tile to the current tile
-                bombs.ForEachAdjacent(row, column, (adjacentIsBomb, _, __) =>
+                foreach (var adjacentIsBomb in bombs.GetAdjacentElements(row, column))
                 {
                     // And if its a bomb, update the current tile's adjacent bombs counter
-                    if (!adjacentIsBomb)
+                    if (adjacentIsBomb)
                     {
-                        return;
+                        adjacencyMatrix[row, column]++;
                     }
-
-                    adjacencyMatrix[row, column]++;
-                });
+                }
 
                 // Set the appropriate tile state
                 if (bombs[row, column])
@@ -314,7 +317,7 @@ public class GameFieldViewModel : ViewModelBase
         {
             // If so, the game is over so uncover all the bombs and raise the game over event
             UncoverBombs();
-            GameOver?.Invoke(this, new GameOverEventArgs(playerWon: false));
+            GameOver?.Invoke(this, new GameOverEventArgs(playerWon: false, wasDirectBombClick: true));
 
             return;
         }
@@ -329,7 +332,7 @@ public class GameFieldViewModel : ViewModelBase
             return;
         }
 
-        GameOver?.Invoke(this, new GameOverEventArgs(playerWon: true));
+        GameOver?.Invoke(this, new GameOverEventArgs(playerWon: true, wasDirectBombClick: false));
     }
 
     /// <summary>
@@ -355,16 +358,70 @@ public class GameFieldViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Handles the recursive uncovering of a tile's adjacent tiles if the number of
+    /// marked adjacent tiles is equal to the number of adjacent bombs.
+    /// </summary>
+    /// <param name="tile">The tile whose adjacent tiles to uncover.</param>
+    private void OnTileAdjacentUncovering(TileViewModel tile)
+    {
+        if (_isFirstUncover || !tile.IsUncovered)
+        {
+            return;
+        }
+
+        var numberOfMarkedAdjacent = _field.GetAdjacentElements(tile.Row, tile.Column)
+            .Count(x => x.MarkedState == TileMarkedState.Flag);
+
+        if (tile.AdjacentBombs != numberOfMarkedAdjacent)
+        {
+            return;
+        }
+
+        var coveredUnmarkedAdjacent = _field.GetAdjacentElements(tile.Row, tile.Column)
+            .Where(x => !x.IsUncovered && x.MarkedState is TileMarkedState.Unmarked);
+
+        foreach (var adjacent in coveredUnmarkedAdjacent)
+        {
+            UncoverAdjacent(adjacent, uncoverBombs: true);
+        }
+
+        // Check if all tiles have been uncovered - if so, the player won
+        if (_coveredTiles.Count != 0)
+        {
+            return;
+        }
+
+        GameOver?.Invoke(this, new GameOverEventArgs(playerWon: true, wasDirectBombClick: false));
+    }
+
+    /// <summary>
+    /// Handles the highlighting of a tile's covered adjacent tiles.
+    /// </summary>
+    /// <param name="tile">The tile whose adjacent tiles to highlight.</param>
+    /// <param name="highlight">Value to toggle the highlight.</param>
+    private void OnTileHighlight(TileViewModel tile, bool highlight)
+    {
+        var coveredAdjacent = _field.GetAdjacentElements(tile.Row, tile.Column)
+            .Where(x => !x.IsUncovered);
+
+        foreach (var adjacent in coveredAdjacent)
+        {
+            adjacent.IsHighlighted = highlight;
+        }
+    }
+
     #endregion
 
     /// <summary>
     /// Uncovers the specified adjacent tile's neighbors recursively.
     /// </summary>
     /// <param name="adjacentTile">The adjacent tile to uncover.</param>
-    private void UncoverAdjacent(TileViewModel adjacentTile)
+    /// <param name="uncoverBombs">Flag indicating whether to uncover bomb tiles.</param>
+    private void UncoverAdjacent(TileViewModel adjacentTile, bool uncoverBombs = false)
     {
         // The tile can not be uncovered if it's marked, is a bomb or has been uncovered
-        if (!adjacentTile.IsUncoverable || adjacentTile.State == TileState.Bomb)
+        if (!adjacentTile.IsUncoverable || (!uncoverBombs && adjacentTile.State is TileState.Bomb))
         {
             return;
         }
@@ -379,9 +436,20 @@ public class GameFieldViewModel : ViewModelBase
         {
             return;
         }
+        else if (uncoverBombs && adjacentTile.State is TileState.Bomb)
+        {
+            // In case a bomb has been uncovered the game is over so uncover all the bombs and raise the game over event
+            UncoverBombs();
+            GameOver?.Invoke(this, new GameOverEventArgs(playerWon: false, wasDirectBombClick: false));
+
+            return;
+        }
 
         // Otherwise update the tile's neighbors recursively
-        _field.ForEachAdjacent(adjacentTile.Row, adjacentTile.Column, (newAdjacentTile, _, __) => UncoverAdjacent(newAdjacentTile));
+        foreach (var adjacent in _field.GetAdjacentElements(adjacentTile.Row, adjacentTile.Column))
+        {
+            UncoverAdjacent(adjacent);
+        }
     }
 
     /// <summary>

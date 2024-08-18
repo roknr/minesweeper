@@ -22,6 +22,21 @@ public class TileViewModel : ViewModelBase
     /// </summary>
     public event EventHandler<TileMarkedEventArgs>? Marked;
 
+    /// <summary>
+    /// The event that is fired when the tile's covered neighbors are supposed to be uncovered in a recursive fashion.
+    /// </summary>
+    public event EventHandler? AdjacentUncovering;
+
+    /// <summary>
+    /// The event that is fired when the tile's covered neighbors are supposed to start being highlighted.
+    /// </summary>
+    public event EventHandler? HighlightStarted;
+
+    /// <summary>
+    /// The event that is fired when the tile's covered neighbors are supposed to stop being highlighted.
+    /// </summary>
+    public event EventHandler? HighlightEnded;
+
     #endregion
 
     #region Public properties
@@ -47,6 +62,11 @@ public class TileViewModel : ViewModelBase
     public TileState State { get; } = TileState.Empty;
 
     /// <summary>
+    /// The flag indicating whether the tile's mark can be toggled.
+    /// </summary>
+    public bool CanToggleMark { get; }
+
+    /// <summary>
     /// The marked state of the tile.
     /// </summary>
     public TileMarkedState MarkedState { get; private set; } = TileMarkedState.Unmarked;
@@ -54,13 +74,18 @@ public class TileViewModel : ViewModelBase
     /// <summary>
     /// Value indicating whether this tile has already been uncovered.
     /// </summary>
-    public bool IsUncovered { get; private set; } = false;
+    public bool IsUncovered { get; private set; }
 
     /// <summary>
     /// Value indicating whether this tile can be uncovered or not. Can be uncovered if the
     /// tile is not marked and is not yet uncovered.
     /// </summary>
     public bool IsUncoverable => MarkedState == TileMarkedState.Unmarked && !IsUncovered;
+
+    /// <summary>
+    /// Value indicating whether the tile is highlighted.
+    /// </summary>
+    public bool IsHighlighted { get; set; }
 
     #region Commands
 
@@ -73,6 +98,18 @@ public class TileViewModel : ViewModelBase
     /// The command that toggles the mark of the tile.
     /// </summary>
     public IRelayCommand ToggleMarkCommand { get; }
+
+    /// <summary>
+    /// The command that uncovers the remaining adjacent tiles, if the number of adjacent tiles
+    /// marked with a bomb is equal to the number of <see cref="AdjacentBombs"/>.
+    /// Otherwise it begins highlighting the adjacent tiles that could still be a bomb.
+    /// </summary>
+    public IRelayCommand BeginUncoverAdjacentTilesCommand { get; }
+
+    /// <summary>
+    /// The command that stops highlighting the adjacent tiles that could still be a bomb.
+    /// </summary>
+    public IRelayCommand EndUncoverAdjacentTilesCommand { get; }
 
     #endregion
 
@@ -88,15 +125,19 @@ public class TileViewModel : ViewModelBase
     /// <param name="column">The column in which this tile is in.</param>
     /// <param name="adjacentBombs">The number of adjacent bombs to this tile.</param>
     /// <param name="state">The state of this tile.</param>
-    public TileViewModel(int row, int column, int adjacentBombs, TileState state)
+    /// <param name="canToggleMark">The flag indicating whether the tile's mark can be toggled.</param>
+    public TileViewModel(int row, int column, int adjacentBombs, TileState state, bool canToggleMark)
     {
         Row = row;
         Column = column;
         AdjacentBombs = adjacentBombs;
         State = state;
+        CanToggleMark = canToggleMark;
 
         UncoverCommand = new RelayCommand(_ => OnTileUncovering());
-        ToggleMarkCommand = new RelayCommand(_ => OnTileToggledMark());
+        ToggleMarkCommand = new RelayCommand(_ => OnTileToggledMark(), _ => CanToggleMark && !IsUncovered);
+        BeginUncoverAdjacentTilesCommand = new RelayCommand(_ => OnBeginUncoverAdjacentTiles());
+        EndUncoverAdjacentTilesCommand = new RelayCommand(_ => OnEndUncoverAdjacentTiles());
     }
 
     #endregion
@@ -110,6 +151,8 @@ public class TileViewModel : ViewModelBase
     public void Uncover()
     {
         IsUncovered = true;
+
+        ToggleMarkCommand.RaiseCanExecuteChanged();
     }
 
     #endregion
@@ -149,6 +192,26 @@ public class TileViewModel : ViewModelBase
 
         // And raise the event that the tile has been marked
         Marked?.Invoke(this, new TileMarkedEventArgs(MarkedState));
+    }
+
+    /// <summary>
+    /// Uncovers the remaining adjacent tiles, if the number of adjacent tiles marked with a bomb
+    /// is equal to the number of <see cref="AdjacentBombs"/>.
+    /// Otherwise begins highlighting the adjacent tiles that could still be a bomb.
+    /// </summary>
+    private void OnBeginUncoverAdjacentTiles()
+    {
+        AdjacentUncovering?.Invoke(this, EventArgs.Empty);
+
+        HighlightStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// Stops highlighting the adjacent tiles that could still be a bomb.
+    /// </summary>
+    private void OnEndUncoverAdjacentTiles()
+    {
+        HighlightEnded?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion

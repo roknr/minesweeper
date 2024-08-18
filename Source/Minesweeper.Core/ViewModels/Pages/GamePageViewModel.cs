@@ -85,10 +85,16 @@ public class GamePageViewModel : ViewModelBase
             _stopWatch.Stop();
             _timer.Stop();
 
+            var (modalTitle, modalMessage, modalConfirmText) = e switch
+            {
+                { PlayerWon: true, } => ("Congratulations", "You successfully finished the game.", "OK"),
+                { PlayerWon: false, WasDirectBombClick: true, } => ("Game Over", "You clicked on a bomb.", "OK"),
+                { PlayerWon: false, WasDirectBombClick: false } => ("Game Over", "You revealed a bomb.", "OK"),
+                _ => throw new ArgumentOutOfRangeException(nameof(e), "Unexpected game over event arguments.")
+            };
+
             // Show a modal with content based on the game result
-            var modalViewModel = e.PlayerWon
-                ? new ConfirmModalViewModel("Congratulations", "You successfully finished the game", "OK")
-                : new ConfirmModalViewModel("Game Over", "You clicked on a bomb", "OK");
+            var modalViewModel = new ConfirmModalViewModel(modalTitle, modalMessage, modalConfirmText);
 
             // And wait until the modal is exited
             var modalService = IoC.Get<IModalService>();
