@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Drawing;
 using Minesweeper.Core.Enums;
 using Minesweeper.Core.Events;
 using Minesweeper.Core.Extensions;
@@ -196,48 +197,76 @@ public class GameFieldViewModel : ViewModelBase
     /// </summary>
     /// <param name="uncoveredTileRow">The row of the uncovered tile.</param>
     /// <param name="uncoveredTileColumn">The column of the uncovered tile.</param>
-    /// <returns></returns>
+    /// <returns>A two dimensional array of <see cref="bool"/> where a <see cref="true"/> represents a bomb.</returns>
     private bool[,] GenerateBombs(int uncoveredTileRow, int uncoveredTileColumn)
     {
         // Represents the bombs on the field
         var bombs = new bool[_gameSettings.FieldHeight, _gameSettings.FieldWidth];
         var rand = new Random();
 
-        // Represents the possible coordinates where bombs can be placed
-        var possibleCoordinates = new List<Tuple<int, int>>();
+        var possibleCoordinatesCount = CalculatePossibleCoordinatesCount();
+        var possibleCoordinates = new Point[possibleCoordinatesCount];
+        var index = 0;
 
-        // Create all coordinates
+        // Add coordinates except for the uncovered tile and the ones adjacent to it
         for (var row = 0; row < _gameSettings.FieldHeight; row++)
         {
             for (var column = 0; column < _gameSettings.FieldWidth; column++)
             {
-                possibleCoordinates.Add(new Tuple<int, int>(row, column));
+                if (Math.Abs(row - uncoveredTileRow) <= 1 && Math.Abs(column - uncoveredTileColumn) <= 1)
+                {
+                    continue;
+                }
+
+                possibleCoordinates[index++] = new Point(row, column);
             }
-        }
-
-        // From all coordinates, remove the uncovered tile and the ones adjacent to it
-        possibleCoordinates.Remove(new Tuple<int, int>(uncoveredTileRow, uncoveredTileColumn));
-
-        foreach (var (_, row, column) in bombs.GetAdjacentElementsWithIndex(uncoveredTileRow, uncoveredTileColumn))
-        {
-            // Use "new" because Tuple comparison works by comparing component values instead of object references
-            possibleCoordinates.Remove(new Tuple<int, int>(row, column));
         }
 
         // Generate the specified number of bombs
         for (var i = 0; i < _gameSettings.NumberOfBombs; i++)
         {
-            // Take a random coordinate
-            var randomCoordinate = possibleCoordinates[rand.Next(0, possibleCoordinates.Count)];
+            // Take a random coordinate by selecting a random index
+            var randomIndex = rand.Next(0, possibleCoordinatesCount);
+            var randomCoordinate = possibleCoordinates[randomIndex];
 
             // Place the bomb on the tile at the same coordinate
-            bombs[randomCoordinate.Item1, randomCoordinate.Item2] = true;
+            bombs[randomCoordinate.X, randomCoordinate.Y] = true;
 
-            // Remove the coordinate from the possible ones since there's now a bomb there
-            possibleCoordinates.Remove(randomCoordinate);
+            // Swap the selected coordinate with the last available one
+            possibleCoordinates[randomIndex] = possibleCoordinates[--possibleCoordinatesCount];
         }
 
         return bombs;
+
+        int CalculatePossibleCoordinatesCount()
+        {
+            // The total number of tiles minus the ones excluded (uncovered and adjacent)
+            var count = (_gameSettings.FieldHeight * _gameSettings.FieldWidth) - 9;
+
+            if (IsTopOrBottomRow())
+            {
+                count += 3;
+            }
+
+            if (IsLeftMostOrRightMostColumn())
+            {
+                count += 3;
+            }
+
+            if (IsTopLeftCorner() || IsTopRightCorner() || IsBottomLeftCorner() || IsBottomRightCorner())
+            {
+                count--;
+            }
+
+            return count;
+
+            bool IsTopOrBottomRow() => uncoveredTileRow is 0 || uncoveredTileRow == _gameSettings.FieldHeight - 1;
+            bool IsLeftMostOrRightMostColumn() => uncoveredTileColumn is 0 || uncoveredTileColumn == _gameSettings.FieldWidth - 1;
+            bool IsTopLeftCorner() => uncoveredTileRow is 0 && uncoveredTileColumn is 0;
+            bool IsTopRightCorner() => uncoveredTileRow is 0 && uncoveredTileColumn == _gameSettings.FieldWidth - 1;
+            bool IsBottomLeftCorner() => uncoveredTileRow == _gameSettings.FieldHeight - 1 && uncoveredTileColumn is 0;
+            bool IsBottomRightCorner() => uncoveredTileRow == _gameSettings.FieldHeight - 1 && uncoveredTileColumn == _gameSettings.FieldWidth - 1;
+        }
     }
 
     /// <summary>
