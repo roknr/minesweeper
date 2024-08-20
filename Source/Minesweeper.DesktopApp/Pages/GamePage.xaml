@@ -3,6 +3,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ap="clr-namespace:Minesweeper.DesktopApp.AttachedProperties"
       mc:Ignorable="d" 
       d:DesignHeight="450"
       d:DesignWidth="500"
@@ -14,11 +15,10 @@
         <!-- Tile Button data template -->
         <DataTemplate x:Key="TileButtonDataTemplate">
             <Button Command="{Binding UncoverCommand}"
+                    ap:MouseButtonsAttachedProperties.MiddleMouseButtonDownCommand="{Binding BeginUncoverAdjacentTilesCommand}"
+                    ap:MouseButtonsAttachedProperties.MiddleMouseButtonUpCommand="{Binding EndUncoverAdjacentTilesCommand}"
+                    ap:MouseButtonsAttachedProperties.RightMouseButtonClickCommand="{Binding ToggleMarkCommand}"
                     Style="{StaticResource TileButtonStyle}">
-                <Button.InputBindings>
-                    <MouseBinding Gesture="RightClick"
-                                  Command="{Binding ToggleMarkCommand}"/>
-                </Button.InputBindings>
             </Button>
         </DataTemplate>
 
