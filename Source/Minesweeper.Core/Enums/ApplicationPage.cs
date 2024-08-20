@@ -1,18 +1,17 @@
-namespace Minesweeper.Core.Enums
+namespace Minesweeper.Core.Enums;
+
+/// <summary>
+/// Defines the types of pages available in the application.
+/// </summary>
+public enum ApplicationPage
 {
     /// <summary>
-    /// Defines the types of pages available in the application.
+    /// The start page.
     /// </summary>
-    public enum ApplicationPage
-    {
-        /// <summary>
-        /// The start page.
-        /// </summary>
-        Start,
+    Start = 0,
 
-        /// <summary>
-        /// The game page.
-        /// </summary>
-        Game
-    }
+    /// <summary>
+    /// The game page.
+    /// </summary>
+    Game = 1
 }

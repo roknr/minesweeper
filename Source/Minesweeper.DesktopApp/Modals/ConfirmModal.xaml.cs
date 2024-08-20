@@ -1,16 +1,15 @@
-namespace Minesweeper.DesktopApp.Modals
+namespace Minesweeper.DesktopApp.Modals;
+
+/// <summary>
+/// The confirm modal.
+/// </summary>
+public partial class ConfirmModal : ModalBase
 {
     /// <summary>
-    /// The confirm modal.
+    /// Initializes a new instance of the <see cref="ConfirmModal"/> class.
     /// </summary>
-    public partial class ConfirmModal : ModalBase
+    public ConfirmModal()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConfirmModal"/> class.
-        /// </summary>
-        public ConfirmModal()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
