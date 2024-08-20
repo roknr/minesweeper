@@ -9,7 +9,7 @@
     <ROW Property="ARPPRODUCTICON" Value="Minesweeper.exe" Type="8"/>
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="UpperBit"/>
-    <ROW Property="ProductCode" Value="1033:{CF24B75C-D4E1-4985-9436-DA3334136D9E} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{9BF00D6A-7936-44A9-8375-D9E1598443D0} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Minesweeper"/>
     <ROW Property="ProductVersion" Value="2.1.0.0" Options="32"/>
