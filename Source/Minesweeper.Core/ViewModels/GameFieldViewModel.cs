@@ -157,8 +157,13 @@ public class GameFieldViewModel : ViewModelBase
                 Field[row].Add(tile);
                 _field[row, column] = tile;
 
-                // Handle tile's events
-                tile.Uncovering += (o, e) => OnTileUncovering((TileViewModel)o!);
+                // Handle tile uncovering by listening for the tile's uncovering event
+                tile.Uncovering += (o, e) =>
+                {
+                    var uncoveredTile = (TileViewModel)o!;
+                    OnTileUncovering(uncoveredTile.Row, uncoveredTile.Column);
+                };
+
                 tile.AdjacentUncovering += (o, e) => OnTileAdjacentUncovering((TileViewModel)o!);
                 tile.HighlightStarted += (o, e) => OnTileHighlight((TileViewModel)o!, highlight: true);
                 tile.HighlightEnded += (o, e) => OnTileHighlight((TileViewModel)o!, highlight: false);
@@ -316,14 +321,19 @@ public class GameFieldViewModel : ViewModelBase
     /// <summary>
     /// Handles the uncovering of a tile.
     /// </summary>
-    /// <param name="uncoveredTile">The uncovered tile.</param>
-    private void OnTileUncovering(TileViewModel uncoveredTile)
+    /// <remarks>
+    /// Use tile's row and column instead of the tile reference directly.
+    /// See <seealso href="https://github.com/roknr/minesweeper/commit/ce80e698b337e5d916fe13e0d57ad3cf775b0d36"/>.
+    /// </remarks>
+    /// <param name="uncoveredTileRow">The row of the uncovered tile.</param>
+    /// <param name="uncoveredTileColumn">The column of the uncovered tile.</param>
+    private void OnTileUncovering(int uncoveredTileRow, int uncoveredTileColumn)
     {
         // If this is the first tile uncover
         if (_isFirstUncover)
         {
             // Set up the field, so that the first uncovered tile is never a bomb
-            SetupField(uncoveredTile.Row, uncoveredTile.Column);
+            SetupField(uncoveredTileRow, uncoveredTileColumn);
 
             // It's not the first uncover anymore
             _isFirstUncover = false;
@@ -331,6 +341,9 @@ public class GameFieldViewModel : ViewModelBase
             // Raise the event that the game has started
             GameStarted?.Invoke(this, EventArgs.Empty);
         }
+
+        // Get the tile that was uncovered from its coordinates
+        var uncoveredTile = _field[uncoveredTileRow, uncoveredTileColumn];
 
         // It's not the first uncover, so check if the uncovered tile is a bomb
         if (uncoveredTile.State == TileState.Bomb)
